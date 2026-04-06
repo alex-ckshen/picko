@@ -1,0 +1,147 @@
+#include <LRemote.h>  //使用Linkit Remote的設定
+#include <Servo.h>
+
+Servo myservo;  // create servo object to control a servo
+// twelve servo objects can be created on most boards
+
+int pos = 0;    // variable to store the servo position
+
+LRemoteLabel label1;  //設定文字標籤
+LRemoteButton F;  //設定前進文字標籤
+LRemoteButton B;  //設定後退文字標籤
+LRemoteButton L;  //設定左轉文字標籤
+LRemoteButton R;  //設定右轉文字標籤
+LRemoteButton S;  //設定停止文字標籤
+LRemoteButton P;  //設定撿球文字標籤
+LRemoteSlider slider1;  //設定速度滑桿標籤
+
+void setup() {
+  LRemote.setName("Ping Pong Car");        //設定名稱
+  LRemote.setOrientation(RC_PORTRAIT);  //設定APP中的顯示方向
+  LRemote.setGrid(3, 5);                //設定APP中的顯示格線
+
+    label1.setPos(0, 0);                //設定位置
+    label1.setText("Linkit Car");       //設定文字為Linkit Car
+    label1.setSize(3, 1);               //設定文字標籤大小
+    label1.setColor(RC_GREEN);  //設定文字標籤顏色
+    LRemote.addControl(label1);  //新增此按鈕
+    
+    F.setPos(1, 1);  //設定位置
+    F.setText("Foward");  //設定文字為Foward
+    F.setSize(1, 1);  //設定文字標籤大小
+    F.setColor(RC_ORANGE);  //設定文字標籤顏色
+    LRemote.addControl(F);  //新增此按鈕
+
+    B.setPos(1, 3);  //設定位置
+    B.setText("Back");  //設定文字為Back
+    B.setSize(1, 1);  //設定文字標籤大小
+    B.setColor(RC_ORANGE);  //設定文字標籤顏色
+    LRemote.addControl(B);  //新增此按鈕
+
+    L.setPos(0, 2);  //設定位置
+    L.setText("Left");  //設定文字為Left
+    L.setSize(1, 1);  //設定文字標籤大小
+    L.setColor(RC_ORANGE);  //設定文字標籤顏色
+    LRemote.addControl(L);  //新增此按鈕
+
+    R.setPos(2, 2);  //設定位置
+    R.setText("Right");  //設定文字為Right
+    R.setSize(1, 1);  //設定文字標籤大小
+    R.setColor(RC_ORANGE);  //設定文字標籤顏色
+    LRemote.addControl(R);  //新增此按鈕
+
+    S.setPos(1, 2);  //設定位置
+    S.setText("Stop");  //設定文字為Stop
+    S.setSize(1, 1);  //設定文字標籤大小
+    S.setColor(RC_ORANGE);  //設定文字標籤顏色
+    LRemote.addControl(S);  //新增此按鈕
+    
+    P.setPos(2, 3);  //設定位置
+    P.setText("Pick");  //設定文字為Pick
+    P.setSize(1, 1);  //設定文字標籤大小
+    P.setColor(RC_BLUE);  //設定文字標籤顏色
+    LRemote.addControl(P);  //新增此按鈕
+
+    slider1.setPos(0, 4);  //設定位置
+    slider1.setSize(3, 1);  //設定文字標籤大小
+    slider1.setText("速度值");  //設定文字為"速度值"
+    slider1.setValueRange(100, 150, 100);  //設定滑桿範圍
+    slider1.setColor(RC_BLUE);  //設定速度滑桿顏色
+    LRemote.addControl(slider1);  //新增此滑桿
+    
+  LRemote.begin();   //開始遙控器運作
+  
+  pinMode(10, OUTPUT);   //設定PIN10為輸出
+  pinMode(12, OUTPUT);   //設定PIN12為輸出
+  pinMode(13, OUTPUT);   //設定PIN13為輸出
+  pinMode(17, OUTPUT);   //設定PIN17為輸出
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+}
+
+
+void loop()  {
+  LRemote.process();   //開始執行程式
+  
+  if (S.getValue() == 1) { //如果按了S按鈕
+    analogWrite(10, 0);    //PIN10訊號0 right INA +
+    analogWrite(12, 0);    //PIN12訊號0 right INB -   
+    analogWrite(13, 0);    //PIN13訊號0 left  INB - 
+    analogWrite(17, 0);    //PIN17訊號0 left  INA +
+    
+  }
+  if (F.getValue() == 1) {                   //如果按了F按鈕
+    //if (slider1.isValueChanged()) {        //--如果滑桿數值改變
+      analogWrite(10, slider1.getValue());   //PIN10訊號0          right INA +
+      analogWrite(12, 0);                    //PIN12訊號為滑桿的數值 right INB -
+      analogWrite(13, slider1.getValue());   //PIN13訊號0          left  INB -
+      analogWrite(17, 0);                    //PIN17訊號為滑桿的數值 left  INA +
+    //}
+    
+  }
+  if (B.getValue() == 1) {                   //如果按了B按鈕
+    //if (slider1.isValueChanged()) {        //如果滑桿數值改變
+      analogWrite(10, 0);                    //PIN10訊號為滑桿的數值 right INA +
+      analogWrite(12, slider1.getValue());   //PIN12訊號0          right INB -
+      analogWrite(13, 0);                    //PIN13訊號為滑桿的數值 left  INB -
+      analogWrite(17, slider1.getValue());   //PIN17訊號0          left  INA +
+    //}
+
+  }
+  if (L.getValue() == 1) {                   //如果按了L按鈕
+    //if (slider1.isValueChanged()) {        //如果滑桿數值改變
+      analogWrite(10, slider1.getValue());   //PIN10訊號0          right INA +
+      analogWrite(12, 0);                    //PIN12訊號為滑桿的數值 right INB -
+      analogWrite(13, 0);                    //PIN13訊號為滑桿的數值 left  INB -
+      analogWrite(17, slider1.getValue());   //PIN17訊號0          left  INA +
+    //}
+
+  }
+  if (R.getValue() == 1) {   //如果按了R按鈕
+    //if (slider1.isValueChanged()) {        //如果滑桿數值改變
+      analogWrite(10, 0);                    //PIN10訊號為滑桿的數值 right INA +
+      analogWrite(12, slider1.getValue());   //PIN12訊號0          right INB -
+      analogWrite(13, slider1.getValue());   //PIN13訊號0          left  INB -
+      analogWrite(17, 0);                    //PIN17訊號為滑桿的數值 left  INA +
+    //}
+  }
+  
+  if (P.getValue() == 1) {                   //如果按了P按鈕
+    analogWrite(10, 0);                      //PIN10訊號0 right INA +
+    analogWrite(12, 0);                      //PIN12訊號0 right INB -
+    analogWrite(13, 0);                      //PIN13訊號0 left  INB -
+    analogWrite(17, 0);                      //PIN17訊號0 left  INA +
+    
+   for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+    // in steps of 1 degree
+    myservo.write(pos);              // tell servo to go to position in variable 'pos'
+    delay(15);                       // waits 15 ms for the servo to reach the position
+   }
+
+   for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+    myservo.write(pos);              // tell servo to go to position in variable 'pos'
+    delay(15);                       // waits 15 ms for the servo to reach the position
+   }
+   
+  
+  }
+}
