@@ -1,3 +1,18 @@
+/***************************************************
+ HUSKYLENS An Easy-to-use AI Machine Vision Sensor
+ <https://www.dfrobot.com/product-1922.html>
+ 
+ ***************************************************
+ This example shows how to play with object tracking.
+ 
+ Created 2020-03-13
+ By [Angelo qiao](Angelo.qiao@dfrobot.com)
+ 
+ GNU Lesser General Public License.
+ See <http://www.gnu.org/licenses/> for details.
+ All above must be included in any redistribution
+ ****************************************************/
+
 #include <HUSKYLENS.h>
 #include <Wire.h>
 
