@@ -1,17 +1,18 @@
-/***************** MotorControl_V0 *****************
+/***************** Motor Control v0 *****************
+  Release Notes:
   - First iteration of motor control
   - Motor States:
-      0 - stop
-      1 - forward
-      2 - backwards
-      3 - slide right
-      4 - slide left
-      5 - right up
-      6 - left up
-      7 - left down
-      8 - right down
-      9 - turn right
-      10 - turn left
+    0 - stop
+    1 - forward
+    2 - backwards
+    3 - slide right
+    4 - slide left
+    5 - right up
+    6 - left up
+    7 - left down
+    8 - right down
+    9 - turn right
+    10 - turn left
 ****************************************************/
 
 #include <AFMotor.h>

@@ -13,9 +13,10 @@
  All above must be included in any redistribution
  ****************************************************/
 
-/*************** Camera To Action V0 ***************
-  Ball is always in front of the robot.
-  Using basic FBRL controls from MotorControl_V1:
+/*************** Camera To Action v0 ***************
+  Goals:
+  - Ball is always in front of the robot.
+  - Using basic FBRL controls from Motor Control v1:
     X X : Stop
     F X : Forward
     B X : Backward
@@ -45,7 +46,6 @@ HUSKYLENS huskylens;
 
 #define DBG 1
 
-
 int getxCenter;
 int getyCenter;
 int xBorder0;
@@ -56,7 +56,7 @@ int yBorder1;
 int xStatus = 3; //0 for less than wanted, 1 good, 2 for more
 int yStatus = 3; //0 for less than wanted, 1 good, 2 for more
 
-//************** Function: motor movement ***************
+/***************** Motor Control v1 *****************/
 void movement( int front_left_speed , int back_left_speed , int front_right_speed , int back_right_speed ) {
 
   if( front_left_speed > 0 ) {
@@ -99,7 +99,6 @@ void movement( int front_left_speed , int back_left_speed , int front_right_spee
     back_right.run(RELEASE);
   }
 }
-//************** Function: set Course ***************
 void course(char motor_state_main, char motor_state_side) {
   int i = motor_speed;
 
@@ -134,6 +133,7 @@ void course(char motor_state_main, char motor_state_side) {
       } break;
   }
 }
+/****************************************************/
 
 
 void setup() {

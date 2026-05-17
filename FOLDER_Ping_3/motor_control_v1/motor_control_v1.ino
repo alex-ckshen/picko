@@ -1,4 +1,5 @@
-/***************** MotorControl_V1 *****************
+/***************** Motor Control v1 *****************
+  Release Notes:
   - Made controls more intuitive and simple.
   - Used FBRL characters to replace int
   - Use different combinations to control direction
@@ -15,9 +16,10 @@
       O : Rotate Left
 
   Upcoming Improvements:
-    Change to intuitive motor sequence and labels.
-    Independent motor speed controls.
-    Dynamic speed changes based on calibration.
+  - Change to intuitive motor sequence and labels.
+  - Motor kick start addition.
+  - Independent motor speed controls.
+  - Dynamic speed changes based on calibration.
 ****************************************************/
 
 
