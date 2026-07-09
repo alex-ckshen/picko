@@ -31,8 +31,9 @@
   
   Release Notes:
   - Use Huskylens (-1,-1) coordinates to dertermine
-    status of ball, replacing use of huskylens.request()
-  - Replaced 
+    status of ball, replacing use of "huskylens.request()".
+  - Simplified action to 4 directions first.
+  - Changed status labeling. Added "-1" for "undetected".
   
 ****************************************************/
 
@@ -50,7 +51,7 @@ HUSKYLENS huskylens;
 #define motor_speed 100
 #define center_size 40
 
-#define DBG 1
+#define DBG 0
 
 int getxCenter;
 int getyCenter;
@@ -59,8 +60,8 @@ int xBorder1;
 int yBorder0;
 int yBorder1;
 
-int xStatus = 3; //0 for less than wanted, 1 good, 2 for more
-int yStatus = 3; //0 for less than wanted, 1 good, 2 for more
+int xStatus = -1; //0 for less than wanted, 1 good, 2 for more (-1 for undetected)
+int yStatus = -1; //0 for less than wanted, 1 good, 2 for more (-1 for undetected)
 
 /***************** Motor Control v1 *****************/
 void movement( int front_left_speed , int back_left_speed , int front_right_speed , int back_right_speed ) {
@@ -157,32 +158,27 @@ void setup() {
 void loop() {
   HUSKYLENSResult result = huskylens.read(); //read in newest results from Huskylens
 
-  if(huskylens.request() != 0){
-    getxCenter = result.xCenter;
-    getyCenter = result.yCenter;
+  getxCenter = result.xCenter;
+  getyCenter = result.yCenter;
 
-    if( getxCenter < xBorder0 ){xStatus = 0;}
-    else if( xBorder0 <= getxCenter && getxCenter <= xBorder1 ){xStatus = 1;}
-    else if( xBorder1 < getxCenter ){xStatus = 2;}
+  if     ( getxCenter == -1){xStatus = -1;}
+  else if( getxCenter < xBorder0 ){xStatus = 0;}
+  else if( xBorder0 <= getxCenter && getxCenter <= xBorder1 ){xStatus = 1;}
+  else if( xBorder1 < getxCenter ){xStatus = 2;}
 
-    if( getyCenter < yBorder0){yStatus = 0;}
-    else if( yBorder0 <= getyCenter && getyCenter <= yBorder1 ){yStatus = 1;}
-    else if( yBorder1 < getyCenter ){yStatus = 2;}
+  if     ( getyCenter == -1){yStatus = -1;}
+  else if( getyCenter < yBorder0){yStatus = 0;}
+  else if( yBorder0 <= getyCenter && getyCenter <= yBorder1 ){yStatus = 1;}
+  else if( yBorder1 < getyCenter ){yStatus = 2;}
 
-    if (xStatus == 1 && yStatus == 1) {
-      Serial.println("Course: X, X");
-      course('X','X');
-    } else if (xStatus == 0) {
-      if      (yStatus == 0) { Serial.println("Course: L, F"); course('L','F'); }
-      else if (yStatus == 1) { Serial.println("Course: L, X"); course('L','X'); }
-      else if (yStatus == 2) { Serial.println("Course: L, B"); course('L','B'); }
-    } else if (xStatus == 2) {
-      if      (yStatus == 0) { Serial.println("Course: R, F"); course('R','F'); }
-      else if (yStatus == 1) { Serial.println("Course: R, X"); course('R','X'); }
-      else if (yStatus == 2) { Serial.println("Course: R, B"); course('R','B'); }
-    }
-  }else{
-      course('X','X');
+  if (xStatus == -1 && yStatus == -1) {
+    course('X','X');
+  } else if (yStatus == 0) {
+    course('F','X');
+  } else if (yStatus == 2) {
+    course('B','X');
+  } else if (xStatus == 1) {
+    course('X','X');
   }
 
   #if(DBG==1)

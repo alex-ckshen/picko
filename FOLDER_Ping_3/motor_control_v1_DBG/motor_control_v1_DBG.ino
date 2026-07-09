@@ -1,4 +1,5 @@
-/***************** MotorControl_V1 *****************
+/***************** Motor Control v1 *****************
+  Release Notes:
   - Made controls more intuitive and simple.
   - Used FBRL characters to replace int
   - Use different combinations to control direction
@@ -15,9 +16,10 @@
       O : Rotate Left
 
   Upcoming Improvements:
-    Change to intuitive motor sequence and labels.
-    Independent motor speed controls.
-    Dynamic speed changes based on calibration.
+  - Change to intuitive motor sequence and labels.
+  - Motor kick start addition.
+  - Independent motor speed controls.
+  - Dynamic speed changes based on calibration.
 ****************************************************/
 
 
@@ -25,12 +27,12 @@
 
 #define motor_speed 150
 
-//====================================================================================================================
 AF_DCMotor back_right (1, MOTOR12_64KHZ);
 AF_DCMotor back_left  (2, MOTOR12_64KHZ);
 AF_DCMotor front_right(3, MOTOR12_64KHZ);
 AF_DCMotor front_left (4, MOTOR12_64KHZ);
 
+//====================================================================================================================
 void movement( int front_left_speed , int back_left_speed , int front_right_speed , int back_right_speed ) {
   
   if( front_left_speed > 0 ) {
@@ -73,7 +75,7 @@ void movement( int front_left_speed , int back_left_speed , int front_right_spee
     back_right.run(RELEASE);
   }
 }
-//====================================================================================================================
+
 void course(char motor_state_main, char motor_state_side) {
   int i = motor_speed;
 
@@ -123,5 +125,4 @@ void setup(){
 }
 
 void loop(){
-  course('L', 'X');
 }
